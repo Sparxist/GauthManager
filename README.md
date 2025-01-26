@@ -13,3 +13,6 @@ This program simplifies the task of using Gauth Math to screenshot questions by 
 - Go to the Releases page and download the latest `.py` file.
 - In your command line of choice, run `pip install pygetwindow pyautogui Pillow pywin32`.
 - Run the python file.
+
+# Why not just clear your cookies?
+From my testing, it is very hard to reliably go through every possible browser's setting page without knowing other factors like screen resolution and pre-prepared cookie clear settings. It is much more consistent to use purely keyboard-based inputs without much dependance on browser.
