@@ -1,5 +1,5 @@
 # Gauth Manager
-![image](https://github.com/user-attachments/assets/435f9c84-118a-44e4-850f-efcb34f015a7)
+![image](https://github.com/user-attachments/assets/03f3643b-87bf-46cd-83ef-0626ed3e68da)
 
 This program simplifies the task of using Gauth Math to screenshot questions by opening a new Incognito tab if the user runs into a paywall. It is a solid alternative to using Gauth on your phone.
 
