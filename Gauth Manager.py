@@ -72,8 +72,8 @@ def initial_setup(sparx_title, delay):
     else:
         show_error(f"Screenshot window not found.")
 
-def new_incognito(incognito_title, delay):
-    pyautogui.hotkey("ctrl", "shift", "n")
+def new_incognito(incognito_title, delay, incognito_shortcut):
+    pyautogui.hotkey(*incognito_shortcut.split("+"))
     time.sleep(0.1 * delay)
     incognito_window = find_window(incognito_title)
     if incognito_window:
@@ -121,20 +121,20 @@ def del_gauth(incognito_title, gauth_title, delay):
         except Exception as e:
             show_error(f"Could not close window '{win.title}': {e}")
 
-def restart(sparx_title, incognito_title, gauth_title, delay):
+def restart(sparx_title, incognito_title, gauth_title, delay, incognito_shortcut):
     del_gauth(incognito_title, gauth_title, delay)
     initial_setup(sparx_title, delay)
-    new_incognito(incognito_title, delay)
+    new_incognito(incognito_title, delay, incognito_shortcut)
 
-def restart_and_send(sparx_title, incognito_title, gauth_title, delay, padding):
-    restart(sparx_title, incognito_title, gauth_title, delay)
+def restart_and_send(sparx_title, incognito_title, gauth_title, delay, padding, incognito_shortcut):
+    restart(sparx_title, incognito_title, gauth_title, delay, incognito_shortcut)
     time.sleep(delay)
     send_gauth_fast(sparx_title, gauth_title, delay, padding)
 
 def create_gui():
     root = tk.Tk()
-    root.title("G\u0430uth Manager v0.1b")  # \u0430 is Cyrillic A, avoids the program self-killing when restarting Gauth
-    root.geometry("500x250")
+    root.title("G\u0430uth Manager v0.2b")  # \u0430 is Cyrillic A, avoids the program self-killing when restarting Gauth
+    root.geometry("500x260")
     root.attributes("-topmost", True)
     root.configure(bg="#45008a")
 
@@ -173,11 +173,11 @@ def create_gui():
     title_frame = tk.Frame(root, bg="#45008a")
     title_frame.pack(side=tk.LEFT, padx=10, pady=10)
 
-    sparx_label = tk.Label(title_frame, text="Screenshot Window Title:", **label_style)
-    sparx_label.pack(pady=2)
-    sparx_entry = tk.Entry(title_frame, bg=entry_bg, fg=entry_fg, insertbackground="#FFFFFF", width=25)
-    sparx_entry.pack(pady=2)
-    sparx_entry.insert(0, "Sparx Maths")
+    screenshot_label = tk.Label(title_frame, text="Screenshot Window Title:", **label_style)
+    screenshot_label.pack(pady=2)
+    screenshot_entry = tk.Entry(title_frame, bg=entry_bg, fg=entry_fg, insertbackground="#FFFFFF", width=25)
+    screenshot_entry.pack(pady=2)
+    screenshot_entry.insert(0, "Sparx Maths")
 
     incognito_label = tk.Label(title_frame, text="Incognito Window Title:", **label_style)
     incognito_label.pack(pady=2)
@@ -191,14 +191,20 @@ def create_gui():
     gauth_entry.pack(pady=2)
     gauth_entry.insert(0, "Gauth")
 
-    # Function to display help message
+    incognito_shortcut_label = tk.Label(title_frame, text="Incognito Shortcut:", **label_style)
+    incognito_shortcut_label.pack(pady=2)
+    incognito_shortcut_entry = tk.Entry(title_frame, bg=entry_bg, fg=entry_fg, insertbackground="#FFFFFF", width=15)
+    incognito_shortcut_entry.pack(pady=2)
+    incognito_shortcut_entry.insert(0, "ctrl+shift+n")
+
     def show_help():
         messagebox.showinfo(
-            "Help (Gauth Manager v0.1b)", 
+            "Help (Gauth Manager v0.2b)", 
             "Inputs & Buttons:\n\n" +
             "  Padding:  Describes the area inside your screenshot window that will get chopped off.\n" +
             "  Delay:  Changes how fast the program will run (less delay might make the program miss inputs)\n" +
-            "  Windows:  The titles of the windows you wish be detected and used. (Note that it looks for if the window contains the text.)\n\n" +
+            "  Window Titles:  The titles of the windows you wish be detected and used. (Note that it looks for if the window contains the text.)\n" +
+            "  Incognito Shortcut:  The keyboard shortcut for creation of Incognito tabs.\n\n" +
             "  Send Question:  Screenshots & copies the Screenshot Window and pastes it into the Gauth window\n" +
             "  Force Send Question:  Send Question, but it resets the tab (Useful if Send Question doesn't work properly)\n" +
             "  Restart and Send:  Restarts the Gauth session and does Send Question. Use this if you hit a paywall in Gauth.\n" +
@@ -210,10 +216,10 @@ def create_gui():
             "  - Move Gauth Manager away from the screenshot window\n" +
             "  - Make sure to close all existing Incognito windows\n" +
             "  - Click 'Restart Gauth'.\n" +
-            "The program will now rearrange the two tabs to be side by side, in which you can press the corresponding button to send to Gauth or make changes to your screenshot window."
-            )
+            "The program will now rearrange the two tabs to be side by side, in which you can press the corresponding button to send to Gauth or make changes to your screenshot window.\n\n" +
+            "Program made by Gallium-Gonzollium // Sparxist"
+        )
 
-    # Add "Help" button
     tk.Button(title_frame, text="Help", command=show_help, height=1, width=20, **label_style).pack(pady=10)
 
     button_frame = tk.Frame(root, bg="#45008a")
@@ -230,23 +236,23 @@ def create_gui():
         )
 
     tk.Button(button_frame, text="Send Question", 
-              command=lambda: send_gauth(sparx_entry.get(), gauth_entry.get(), float(delay_entry.get()), get_padding()),
+              command=lambda: send_gauth(screenshot_entry.get(), gauth_entry.get(), float(delay_entry.get()), get_padding()),
               height=2, width=20, **button_style).pack(pady=5)
 
     tk.Button(button_frame, text="Force Send Question", 
-              command=lambda: send_gauth_force(sparx_entry.get(), gauth_entry.get(), float(delay_entry.get()), get_padding()),
+              command=lambda: send_gauth_force(screenshot_entry.get(), gauth_entry.get(), float(delay_entry.get()), get_padding()),
               height=1, width=20, **button_style).pack(pady=5)
 
     tk.Button(button_frame, text="Restart and Send", 
-              command=lambda: restart_and_send(sparx_entry.get(), incognito_entry.get(), gauth_entry.get(), float(delay_entry.get()), get_padding()),
+              command=lambda: restart_and_send(screenshot_entry.get(), incognito_entry.get(), gauth_entry.get(), float(delay_entry.get()), get_padding(), incognito_shortcut_entry.get()),
               height=2, width=20, **button_style).pack(pady=5)
 
     tk.Button(button_frame, text="Restart Gauth", 
-              command=lambda: restart(sparx_entry.get(), incognito_entry.get(), gauth_entry.get(), float(delay_entry.get())),
+              command=lambda: restart(screenshot_entry.get(), incognito_entry.get(), gauth_entry.get(), float(delay_entry.get()), incognito_shortcut_entry.get()),
               height=1, width=20, **button_style).pack(pady=5)
 
     tk.Button(button_frame, text="View Screenshot", 
-              command=lambda: copy_window_screenshot_to_clipboard(find_window(sparx_entry.get()), get_padding(), float(delay_entry.get()), show=True),
+              command=lambda: copy_window_screenshot_to_clipboard(find_window(screenshot_entry.get()), get_padding(), float(delay_entry.get()), show=True),
               height=1, width=20, **button_style).pack(pady=5)
 
     root.mainloop()
