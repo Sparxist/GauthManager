@@ -1,4 +1,6 @@
 # Gauth Manager
+![image](https://github.com/user-attachments/assets/03f3643b-87bf-46cd-83ef-0626ed3e68da)
+
 This program simplifies the task of using Gauth Math to screenshot questions by opening a new Incognito tab if the user runs into a paywall. It is a solid alternative to using Gauth on your phone.
 
 # Setup
@@ -11,3 +13,6 @@ This program simplifies the task of using Gauth Math to screenshot questions by 
 - Go to the Releases page and download the latest `.py` file.
 - In your command line of choice, run `pip install pygetwindow pyautogui Pillow pywin32`.
 - Run the python file.
+
+# Why not just clear your cookies?
+From my testing, it is very hard to reliably go through every possible browser's setting page without knowing other factors like screen resolution and pre-prepared cookie clear settings. It is much more consistent to use purely keyboard-based inputs without much dependance on browser.
