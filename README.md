@@ -13,7 +13,7 @@ This program simplifies the task of using Gauth Math to screenshot questions by 
 > [!IMPORTANT]
 > This will only work for Windows devices because of the nature of this program. (This will likely not change in the future, sorry!)
 ## Option 1 - Quick `.exe` file
-- Go to the Releases page and download the latest `.exe` file. Then simply run it.
+- Go to the [Releases page](https://github.com/Sparxist/GauthManager/releases/tag/v0.3b) and download the latest `.exe` file. Then simply run it.
 ###### (It goes without me saying that you can check for yourself that this is not malware. The Python code is built into an exe with [PyInstaller](https://pypi.org/project/pyinstaller/) and with `--onefile --noconsole --windowed` flags. Test it for yourself.)
 ## Option 2 - Python file
 1. Go to the Releases page and download the latest `.py` file.
